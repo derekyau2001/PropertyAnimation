@@ -3,10 +3,15 @@ package com.example.property_animation;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
+import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
+import android.animation.ValueAnimator.AnimatorUpdateListener;
 import android.annotation.SuppressLint;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -63,7 +68,8 @@ public class MainActivity extends ActionBarActivity {
 
 		private LinearLayout xLinLay;
 		private TextView xTxt;
-		private Button btnFallAnim, btnAlphaAnim, btnRotateAnim;
+		private Button btnFallAnim, btnAlphaAnim, btnRotateAnim, btnScaleAnim,
+				btnMoveAnim, btnBackColorAnim;
 
 		private float y, yEnd;
 		private boolean xIsFallingFirst = true;
@@ -82,6 +88,10 @@ public class MainActivity extends ActionBarActivity {
 			btnFallAnim = (Button) rootView.findViewById(R.id.btnFallAnim);
 			btnAlphaAnim = (Button) rootView.findViewById(R.id.btnAlphaAnim);
 			btnRotateAnim = (Button) rootView.findViewById(R.id.btnRotateAnim);
+			btnScaleAnim = (Button) rootView.findViewById(R.id.btnScaleAnim);
+			btnMoveAnim = (Button) rootView.findViewById(R.id.btnMoveAnim);
+			btnBackColorAnim = (Button) rootView
+					.findViewById(R.id.btnBackColorAnim);
 
 			btnFallAnim.setOnClickListener(new OnClickListener() {
 
@@ -93,8 +103,9 @@ public class MainActivity extends ActionBarActivity {
 						yEnd = xLinLay.getHeight() - xTxt.getHeight();
 						xIsFallingFirst = false;
 					}
-					
-					ObjectAnimator animTxtFalling = ObjectAnimator.ofFloat(xTxt, "y", y, yEnd);
+
+					ObjectAnimator animTxtFalling = ObjectAnimator.ofFloat(
+							xTxt, "y", y, yEnd);
 					animTxtFalling.setDuration(2000);
 					animTxtFalling.setRepeatCount(ObjectAnimator.INFINITE);
 					animTxtFalling.setInterpolator(new BounceInterpolator());
@@ -102,7 +113,6 @@ public class MainActivity extends ActionBarActivity {
 
 				}
 			});
-
 			btnAlphaAnim.setOnClickListener(new OnClickListener() {
 
 				@Override
@@ -117,7 +127,6 @@ public class MainActivity extends ActionBarActivity {
 					animTxtAlpha.start();
 				}
 			});
-
 			btnRotateAnim.setOnClickListener(new OnClickListener() {
 
 				@Override
@@ -142,6 +151,115 @@ public class MainActivity extends ActionBarActivity {
 					animTxtRotate.start();
 					// Log.d("debug", "step6");
 
+				}
+			});
+			btnScaleAnim.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					// TODO Auto-generated method stub
+					ValueAnimator animTxtScale = ValueAnimator.ofInt(0, 50);
+					animTxtScale.setDuration(4000);
+					animTxtScale.setRepeatCount(1);
+					animTxtScale.setRepeatMode(ObjectAnimator.REVERSE);
+					animTxtScale.setInterpolator(new LinearInterpolator());
+					animTxtScale
+							.addUpdateListener(new AnimatorUpdateListener() {
+
+								@Override
+								public void onAnimationUpdate(
+										ValueAnimator animation) {
+									// TODO Auto-generated method stub
+									int val = (Integer) animation
+											.getAnimatedValue();
+									xTxt.setTextSize(
+											TypedValue.COMPLEX_UNIT_SP,
+											15 + val);
+
+								}
+							});
+					animTxtScale.start();
+				}
+			});
+			btnMoveAnim.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					// TODO Auto-generated method stub
+					float x, xEnd1, xEnd2;
+
+					x = xTxt.getX();
+					xEnd1 = 0;
+					xEnd2 = xLinLay.getWidth() - xTxt.getWidth();
+
+					ObjectAnimator animTxtMove1 = ObjectAnimator.ofFloat(xTxt,
+							"x", x, xEnd1);
+					animTxtMove1.setDuration(2000);
+					animTxtMove1.setInterpolator(new AccelerateInterpolator());
+
+					ObjectAnimator animTxtMove2 = ObjectAnimator.ofFloat(xTxt,
+							"x", x, xEnd2);
+					animTxtMove2.setDuration(3000);
+					animTxtMove2.setRepeatCount(1);
+					animTxtMove2
+							.setInterpolator(new AccelerateDecelerateInterpolator());
+
+					ObjectAnimator animTxtMove3 = ObjectAnimator.ofFloat(xTxt,
+							"x", xEnd2, x);
+					animTxtMove3.setDuration(2000);
+					animTxtMove3
+							.setInterpolator(new AccelerateDecelerateInterpolator());
+
+					AnimatorSet animTxtMove = new AnimatorSet();
+					animTxtMove.playSequentially(animTxtMove1, animTxtMove2,
+							animTxtMove3);
+					animTxtMove.start();
+
+				}
+			});
+
+			btnBackColorAnim.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					// TODO Auto-generated method stub
+
+					int iBackColorRedVal, iBackColorRedEnd;
+					// final int iBackColor =
+					// ((ColorDrawable)(xLinLay.getBackground())).getColor();
+
+					// iBackColorRedVal = (iBackColor & 0x00FF0000) >> 16;
+					iBackColorRedVal = (0x00FF0000) >> 16;
+
+					if (iBackColorRedVal > 127) {
+						iBackColorRedEnd = 0;
+					} else {
+						iBackColorRedEnd = 255;
+					}
+
+					ValueAnimator animScreenBackColor = ValueAnimator.ofInt(
+							iBackColorRedVal, iBackColorRedEnd);
+
+					animScreenBackColor.setDuration(3000);
+					animScreenBackColor
+							.setInterpolator(new LinearInterpolator());
+					animScreenBackColor.start();
+
+					animScreenBackColor
+							.addUpdateListener(new AnimatorUpdateListener() {
+
+								@Override
+								public void onAnimationUpdate(
+										ValueAnimator animation) {
+									// TODO Auto-generated method stub
+									int val = (Integer) animation
+											.getAnimatedValue();
+
+									// xLinLay.setBackgroundColor(iBackColor
+									// &0xFF00FFFF | val << 16);
+									xLinLay.setBackgroundColor(0xFF00FFFF | val << 16);
+								}
+							});
 				}
 			});
 

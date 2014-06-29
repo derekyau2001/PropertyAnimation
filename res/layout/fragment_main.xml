@@ -18,7 +18,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="旋轉文字"
-            android:textSize="14sp" />
+            android:textSize="12sp" />
 
         <Button
             android:id="@+id/btnAlphaAnim"
@@ -26,7 +26,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="透明文字"
-            android:textSize="14sp" />
+            android:textSize="12sp" />
 
         <Button
             android:id="@+id/btnFallAnim"
@@ -34,8 +34,38 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="文字往下掉"
-            android:textSize="14sp" />
+            android:textSize="12sp" />
+    </LinearLayout>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:orientation="horizontal" >
+
+        <Button
+            android:id="@+id/btnScaleAnim"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="放大文字"
+            android:textSize="12sp" />
+
+        <Button
+            android:id="@+id/btnMoveAnim"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="文字左右移動"
+            android:textSize="12sp" />
+
+        <Button
+            android:id="@+id/btnBackColorAnim"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="改變背景顏色"
+            android:textSize="12sp" />
     </LinearLayout>
 
     <LinearLayout

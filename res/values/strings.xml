@@ -6,4 +6,8 @@
     <string name="action_settings">Settings</string>
     <string name="hello">示範 Property Animation 範例程式</string>
 
+    <color name="red">#000000</color>
+
+    <drawable name="block">#000000</drawable>
+
 </resources>
